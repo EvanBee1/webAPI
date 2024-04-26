@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Example Website</title>
+    <title>The API</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.cdnfonts.com/css/the-scientist" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/do-futuristic" rel="stylesheet">
@@ -135,6 +135,44 @@
         .pokemon-img {
             max-width: 100px;
         }   
+        .wrapper
+        {
+        padding-bottom: 90px;
+        }
+
+        .divider
+        {
+        position: relative;
+        margin-top: 90px;
+        height: 1px;
+        }
+
+        .div-transparent:before
+        {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 5%;
+        right: 5%;
+        width: 90%;
+        height: 1px;
+        background-image: linear-gradient(to right, transparent, rgb(48,49,51), transparent);
+        }
+
+        .div-arrow-down:after
+        {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        top: -7px;
+        left: calc(50% - 7px);
+        width: 14px;
+        height: 14px;
+        transform: rotate(45deg);
+        background-color: #F5F5F5;
+        border-bottom: 1px solid rgb(48,49,51);
+        border-right: 1px solid rgb(48,49,51);
+        }
     </style>
 </head>
 <body>
@@ -160,13 +198,63 @@
         </div>
     </section>
 
-    <section>
-        
+    <div class="wrapper">
+        <div class="divider div-transparent div-arrow-down"></div>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+
+        <title>Currency Converter</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+        $(document).ready(function(){
+            $("#convert").click(function(){
+                var amount = $("#amount").val();
+                var baseCurrency = $("#baseCurrency").val();
+                var targetCurrencies = ["SGD", "MYR", "CNY", "USD"]; // Add or remove currencies as needed
+                var apiURL = "https://api.exchangerate-api.com/v4/latest/" + baseCurrency;
+
+                $.get(apiURL, function(data){
+                    var exchangeRates = data.rates;
+                    var result = "<ul>";
+                    $.each(targetCurrencies, function(index, currency){
+                        if(exchangeRates.hasOwnProperty(currency)){
+                            var convertedAmount = amount * exchangeRates[currency];
+                            result += "<li>" + amount + " " + baseCurrency + " = " + convertedAmount.toFixed(2) + " " + currency + "</li>";
+                        }
+                    });
+                    result += "</ul>";
+                    $("#result").html(result);
+                });
+            });
+        });
+        </script>
+        </head>
+        <body>
+
+        <h2>Currency Converter</h2>
+
+        <div>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" step="0.01" min="0">
+        </div>
+        <div>
+            <label for="baseCurrency">Base Currency:</label>
+            <select id="baseCurrency" name="baseCurrency">
+                <option value="USD">USD</option>
+                <option value="MYR">MYR</option>
+            </select>
+        </div>
+        <button id="convert">Convert</button>
+
+        <div id="result"></div>
+        </div>
     </section>
     
     <footer>
         <div class="container">
-            <p class="footer-text">&copy; 2024 Example Website. All rights reserved.</p>
+            <p class="footer-text">&copy; Evan's website, All rights reserved.</p>
         </div>
     </footer>
 </body>
