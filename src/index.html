@@ -238,20 +238,28 @@
             font-family: 'LT Binary Neue', sans-serif;
             margin-bottom: 5px;
         }
+
+        .nasa-title{
+            font-family: 'LT Binary Neue', sans-serif;
+        }
+
+        img#apod-image {
+            border-radius: 30px;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1 class="website-name">- The API -</h1>
-            <nav>
+            <!-- <nav>
                 <ul>
                     <li><a href="#">Home</a></li>
                     <li><a href="#">About</a></li>
                     <li><a href="#">Services</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
-            </nav>
+            </nav> -->
         </div>
     </header>
     
@@ -321,9 +329,41 @@
         <div class="divider div-transparent div-arrow-down"></div>
     </div>
 
-    <section>
+    <section class="hero">
+        <div class="container">
+            <h2 class="nasa-title">Astronomy Picture of the Day</h2>
+            <div id="apod-container">
+                <img id="apod-image" src="" alt="APOD">
+                <p id="apod-title"></p>
+                <p id="apod-explanation"></p>
+            </div>
         
+            <script>
+                function fetchAPOD() {
+                    var apiKey = '6NInZhcbzjBPSxemRSrA6GMeantc3rs15zFd8Blu'; //API key gotten from NASA API website
+                    var apiUrl = 'https://api.nasa.gov/planetary/apod?api_key=' + apiKey;
+        
+                    fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('apod-image').src = data.url;
+                        document.getElementById('apod-title').textContent = data.title;
+                        document.getElementById('apod-explanation').textContent = data.explanation;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching APOD:', error);
+                    });
+                }
+        
+                // Call fetchAPOD function when the page loads
+                window.onload = fetchAPOD;
+            </script>
+        </div>
     </section>
+
+    <div class="wrapper">
+        <div class="divider div-transparent div-arrow-down"></div>
+    </div>
     
     <footer>
         <div class="container">
